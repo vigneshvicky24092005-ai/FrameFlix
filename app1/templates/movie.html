@@ -1,0 +1,190 @@
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameFlix | All Movies</title>
+    <link rel="stylesheet" href="{% static 'css/movie.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="{% url 'home' %}" class="logo">FRAME<span>FLIX</span></a>
+
+    <nav class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'movies' %}" class="active">Movies</a>
+        <a href="{% url 'home' %}#genres">Genres</a>
+        <a href="{% url 'home' %}#about">About</a>
+        <a href="{% url 'my_list' %}">My List</a>
+    </nav>
+
+    <div class="nav-actions">
+        <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+    </div>
+</header>
+
+<main>
+    <section class="page-heading">
+        <span class="section-label">YOUR CINEMA UNIVERSE</span>
+        <h1>Explore <span>Movies</span></h1>
+        <p>Discover your next favorite movie, from timeless classics to modern masterpieces.</p>
+    </section>
+
+    <section class="catalog-controls">
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+            <input
+                type="search"
+                id="movieSearch"
+                placeholder="Search movies by title..."
+                aria-label="Search movies"
+            >
+        </div>
+
+        <div class="genre-filters" aria-label="Filter movies by genre">
+            <button type="button" class="filter-btn active" data-genre="all">All Movies</button>
+            <button type="button" class="filter-btn" data-genre="action">Action</button>
+            <button type="button" class="filter-btn" data-genre="sci-fi">Sci-Fi</button>
+            <button type="button" class="filter-btn" data-genre="drama">Drama</button>
+            <button type="button" class="filter-btn" data-genre="thriller">Thriller</button>
+        </div>
+    </section>
+
+    <section class="catalog-section">
+        <div class="catalog-heading">
+            <h2>Movie Collection</h2>
+            <p><span id="movieCount">{{ movies|length }}</span> movies</p>
+        </div>
+
+        <div class="movie-grid" id="movieGrid">
+            {% for movie in movies %}
+                <article
+                    class="movie-card"
+                    data-title="{{ movie.title|lower }}"
+                    data-genre="{{ movie.genre.name|slugify }}"
+                >
+                    <div class="poster">
+                        {% if movie.poster %}
+                            <img
+                                src="{{ movie.poster }}"
+                                alt="{{ movie.title }} poster"
+                                loading="lazy"
+                            >
+                        {% else %}
+                            <div class="poster-placeholder">No poster available</div>
+                        {% endif %}
+
+                        <span class="poster-rating">★ {{ movie.rating }}</span>
+                        <span class="poster-year">{{ movie.release_year }}</span>
+                    </div>
+
+                    <div class="movie-info">
+                        <span class="movie-genre">{{ movie.genre.name|upper }}</span>
+                        <h3>{{ movie.title }}</h3>
+
+                        <p>{{ movie.description|truncatewords:15 }}</p>
+                        <p class="movie-duration">{{ movie.duration }} minutes</p>
+
+                        <a
+                            href="{% url 'movie_detail' movie.id %}"
+                            class="details-btn"
+                        >
+                            View Details ↗
+                        </a>
+
+                        {% if movie.id in saved_movie_ids %}
+                            <form
+                                method="POST"
+                                action="{% url 'remove_from_my_list' movie.id %}"
+                                class="catalog-list-form"
+                            >
+                                {% csrf_token %}
+                                <button type="submit" class="catalog-list-btn remove-btn">
+                                    <span>✓</span> Remove from My List
+                                </button>
+                            </form>
+                        {% else %}
+                            <form
+                                method="POST"
+                                action="{% url 'add_to_my_list' movie.id %}"
+                                class="catalog-list-form"
+                            >
+                                {% csrf_token %}
+                                <button type="submit" class="catalog-list-btn add-btn">
+                                    <span>+</span> Add to My List
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </article>
+            {% empty %}
+                <p class="empty-state">
+                    No movies available yet. Add movies through Django Admin.
+                </p>
+            {% endfor %}
+        </div>
+
+        <p class="empty-state" id="emptyState" hidden>
+            No movies found. Try another search or genre.
+        </p>
+    </section>
+</main>
+
+<footer class="footer">
+    <a href="{% url 'home' %}" class="logo">FRAME<span>FLIX</span></a>
+    <p>Made for the love of cinema.</p>
+    <p>© 2026 FrameFlix Movie Catalog</p>
+</footer>
+
+<script>
+    const searchInput = document.getElementById("movieSearch");
+    const filterButtons = document.querySelectorAll(".filter-btn");
+    const movieCards = document.querySelectorAll(".movie-card");
+    const movieCount = document.getElementById("movieCount");
+    const emptyState = document.getElementById("emptyState");
+
+    let selectedGenre = "all";
+
+    function filterMovies() {
+        const searchTerm = searchInput.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        movieCards.forEach(function (card) {
+            const title = card.dataset.title;
+            const genre = card.dataset.genre;
+
+            const matchesSearch = title.includes(searchTerm);
+            const matchesGenre =
+                selectedGenre === "all" || genre === selectedGenre;
+
+            const visible = matchesSearch && matchesGenre;
+            card.hidden = !visible;
+
+            if (visible) visibleCount++;
+        });
+
+        movieCount.textContent = visibleCount;
+        emptyState.hidden = visibleCount !== 0;
+    }
+
+    searchInput.addEventListener("input", filterMovies);
+
+    filterButtons.forEach(function (button) {
+        button.addEventListener("click", function () {
+            filterButtons.forEach(function (item) {
+                item.classList.remove("active");
+            });
+
+            button.classList.add("active");
+            selectedGenre = button.dataset.genre;
+            filterMovies();
+        });
+    });
+</script>
+
+</body>
+</html>
+```

@@ -1,0 +1,240 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --bg: #08090d;
+    --panel: #111319;
+    --red: #ff253a;
+    --red-dark: #c90020;
+    --text: #f7f7fa;
+    --muted: #a2a5b1;
+    --border: rgba(255, 255, 255, 0.12);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+    background:
+        radial-gradient(ellipse at 10% 10%, #321017 0%, transparent 40%),
+        radial-gradient(ellipse at 90% 90%, #1a1017 0%, transparent 40%),
+        var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 25px;
+}
+
+.auth-container {
+    width: 100%;
+    max-width: 1250px;
+    min-height: 650px;
+    display: grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    background: rgba(17, 19, 25, 0.88);
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 30px 100px rgba(0, 0, 0, 0.55);
+}
+
+.brand-section {
+    padding: 65px 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background:
+        linear-gradient(145deg, rgba(8, 9, 13, 0.78), rgba(55, 5, 17, 0.9)),
+        url("https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1200&q=85")
+        center / cover no-repeat;
+    border-right: 1px solid var(--border);
+}
+
+.brand-section h1 {
+    font-size: clamp(2.5rem, 4vw, 3.7rem);
+    font-weight: 800;
+    letter-spacing: -2px;
+    margin-bottom: 18px;
+}
+
+.brand-section h1 span {
+    color: var(--red);
+}
+
+.brand-section > p:first-of-type {
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    margin-bottom: 20px;
+}
+
+.brand-section > p:last-of-type {
+    color: #c5c6ce;
+    line-height: 1.8;
+    max-width: 380px;
+}
+
+.form-section {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-content: center;
+    align-items: start;
+    padding: 40px 28px;
+    min-width: 0;
+}
+
+.error-message {
+    grid-column: 1 / -1;
+    color: #ff4d5a;
+    font-size: 14px;
+    line-height: 20px;
+    min-height: 20px;
+    margin: 0 20px 10px;
+}
+
+.login-section,
+.signup-section {
+    padding: 20px;
+    min-width: 0;
+}
+
+.login-section {
+    border-right: 1px solid var(--border);
+}
+
+.login-section h2,
+.signup-section h2 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.login-section > p,
+.signup-section > p {
+    color: var(--muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-top: 8px;
+}
+
+form input {
+    width: 100%;
+    padding: 15px;
+    background: #1a1c24;
+    color: var(--text);
+    border: 1px solid #353844;
+    border-radius: 10px;
+    font-size: 0.92rem;
+    outline: none;
+    transition: border-color 0.25s ease,
+                box-shadow 0.25s ease,
+                background 0.25s ease;
+}
+
+form input::placeholder {
+    color: #858995;
+}
+
+form input:focus {
+    border-color: var(--red);
+    background: #20212a;
+    box-shadow: 0 0 0 3px rgba(255, 37, 58, 0.12);
+}
+
+form button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 18px;
+    background: linear-gradient(135deg, #ff3347, #c90020);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(255, 37, 58, 0.2);
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease,
+                filter 0.25s ease;
+}
+
+form button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(255, 37, 58, 0.35);
+    filter: brightness(1.1);
+}
+
+form button:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 1000px) {
+    body {
+        padding: 20px;
+        align-items: flex-start;
+    }
+
+    .auth-container {
+        grid-template-columns: 1fr;
+        max-width: 750px;
+    }
+
+    .brand-section {
+        padding: 40px;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .form-section {
+        padding: 30px 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 12px;
+    }
+
+    .auth-container {
+        border-radius: 16px;
+    }
+
+    .brand-section {
+        padding: 35px 25px;
+    }
+
+    .brand-section h1 {
+        font-size: 2.5rem;
+    }
+
+    .form-section {
+        grid-template-columns: 1fr;
+        padding: 20px;
+    }
+
+    .login-section,
+    .signup-section {
+        padding: 22px 5px;
+    }
+
+    .login-section {
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+    }
+}

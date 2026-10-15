@@ -1,0 +1,243 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FrameFlix | Movie Catalog</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+</head>
+<body>
+
+    <!-- Django Success / Info Notifications -->
+    {% if messages %}
+        <div class="home-messages" id="homeMessages"
+             role="status" aria-live="polite">
+            {% for message in messages %}
+                <p class="{{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        </div>
+
+        <script>
+            setTimeout(function () {
+                const notification =
+                    document.getElementById("homeMessages");
+
+                if (notification) {
+                    notification.classList.add("hide-message");
+
+                    setTimeout(function () {
+                        notification.remove();
+                    }, 400);
+                }
+            }, 3000);
+        </script>
+    {% endif %}
+
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <a href="#home" class="logo">FRAME<span>FLIX</span></a>
+
+        <nav class="nav-links">
+            <a href="#home" class="active">Home</a>
+            <a href="{% url 'movies' %}">Movies</a>
+            <a href="#genres">Genres</a>
+            <a href="#about">About</a>
+        </nav>
+
+        <div class="nav-actions">
+            <a href="{% url 'movies' %}" class="search-link">
+                Explore Movies
+            </a>
+
+            <a href="{% url 'logout' %}" class="logout-btn">
+                Logout
+            </a>
+        </div>
+    </header>
+
+    <main>
+
+        <!-- Featured Movie Banner -->
+        <section class="hero" id="home">
+            <div class="hero-content">
+
+                <span class="featured-label">FEATURED MOVIE</span>
+
+                <h1>INTER<span>STELLAR</span></h1>
+
+                <div class="movie-meta">
+                    <span>2014</span>
+                    <span class="dot"></span>
+                    <span>Sci-Fi</span>
+                    <span class="dot"></span>
+                    <span>2h 49m</span>
+                    <span class="rating">★ 8.7/10</span>
+                </div>
+
+                <p>
+                    When humanity faces an uncertain future, a team of
+                    explorers travels beyond this world in search of a
+                    new home for mankind.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <!-- Fixed: No movie ID required -->
+                    <a href="{% url 'movies' %}" class="primary-btn">
+                        View Details
+                    </a>
+
+                    <a href="{% url 'movies' %}" class="secondary-btn">
+                        Explore Movies
+                    </a>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Popular Movies: Loaded from Database -->
+        <section class="movie-section" id="movies">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">YOUR NEXT FAVORITE</span>
+                    <h2>Popular Movies</h2>
+                </div>
+
+                <a href="{% url 'movies' %}" class="view-all">
+                    View Collection →
+                </a>
+            </div>
+
+            <div class="movie-grid">
+
+                {% for movie in movies %}
+
+                    <article class="movie-card">
+
+                        <!-- Movie Poster -->
+                        <div class="poster">
+
+                            {% if movie.poster %}
+                                <img
+                                    src="{{ movie.poster }}"
+                                    alt="{{ movie.title }} movie poster"
+                                    loading="lazy"
+                                >
+                            {% else %}
+                                <div class="poster-placeholder">
+                                    No poster available
+                                </div>
+                            {% endif %}
+
+                            <span class="poster-rating">
+                                ★ {{ movie.rating }}
+                            </span>
+
+                        </div>
+
+                        <!-- Movie Information -->
+                        <div class="movie-info">
+
+                            <h3>{{ movie.title }}</h3>
+
+                            <p>
+                                {{ movie.genre.name }} ·
+                                {{ movie.release_year }}
+                            </p>
+
+                            <!-- Fixed: Pass the current movie ID -->
+                            <a
+                                href="{% url 'movie_detail' movie.id %}"
+                                class="movie-details-btn"
+                            >
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </article>
+
+                {% empty %}
+
+                    <p class="no-movies">
+                        No movies available yet. Add movies through
+                        Django Admin.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+        </section>
+
+        <!-- Genres -->
+        <section class="genre-section" id="genres">
+
+            <div class="section-heading">
+                <div>
+                    <span class="section-label">FIND YOUR MOOD</span>
+                    <h2>Explore Genres</h2>
+                </div>
+            </div>
+
+            <div class="genre-grid">
+
+                <a href="{% url 'movies' %}" class="genre-card">
+                    <span>01</span>
+                    <h3>Action</h3>
+                    <p>Thrills and adrenaline</p>
+                </a>
+
+                <a href="{% url 'movies' %}" class="genre-card">
+                    <span>02</span>
+                    <h3>Sci-Fi</h3>
+                    <p>Beyond imagination</p>
+                </a>
+
+                <a href="{% url 'movies' %}" class="genre-card">
+                    <span>03</span>
+                    <h3>Drama</h3>
+                    <p>Stories that move you</p>
+                </a>
+
+                <a href="{% url 'movies' %}" class="genre-card">
+                    <span>04</span>
+                    <h3>Thriller</h3>
+                    <p>Expect the unexpected</p>
+                </a>
+
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about-section" id="about">
+
+            <h2>Every Movie Has a Story.</h2>
+
+            <p>
+                Discover unforgettable films, explore new genres,
+                and build your own world of cinema with FrameFlix.
+            </p>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+
+        <a href="#home" class="logo">FRAME<span>FLIX</span></a>
+
+        <p>Made for the love of cinema.</p>
+
+        <p class="copyright">
+            © 2026 FrameFlix Movie Catalog
+        </p>
+
+    </footer>
+
+</body>
+</html>

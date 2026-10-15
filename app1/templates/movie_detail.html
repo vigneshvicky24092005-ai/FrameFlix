@@ -1,0 +1,150 @@
+```html
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.title }} | FrameFlix</title>
+    <link rel="stylesheet" href="{% static 'css/movie_detail.css' %}">
+</head>
+<body>
+
+<header class="navbar">
+    <a href="{% url 'home' %}" class="logo">FRAME<span>FLIX</span></a>
+
+    <nav class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'movies' %}" class="active">Movies</a>
+        <a href="{% url 'home' %}#genres">Genres</a>
+        <a href="{% url 'home' %}#about">About</a>
+        <a href="{% url 'my_list' %}">My List</a>
+    </nav>
+
+    <a href="{% url 'logout' %}" class="logout-btn">Logout</a>
+</header>
+
+<main>
+    <section class="movie-hero">
+        <div class="hero-overlay"></div>
+
+        <div class="movie-content">
+
+            <div class="movie-poster">
+                {% if movie.poster %}
+                    <img
+                        src="{{ movie.poster }}"
+                        alt="{{ movie.title }} movie poster"
+                    >
+                {% else %}
+                    <div class="poster-placeholder">No poster available</div>
+                {% endif %}
+            </div>
+
+            <div class="movie-description">
+                <span class="eyebrow">MOVIE DETAILS</span>
+
+                <h1>{{ movie.title }}</h1>
+
+                <div class="movie-meta">
+                    <span>{{ movie.release_year }}</span>
+                    <span class="separator">•</span>
+                    <span>{{ movie.duration }} minutes</span>
+                    <span class="separator">•</span>
+                    <span>{{ movie.genre.name }}</span>
+                </div>
+
+                <div class="rating">
+                    <span class="star">★</span>
+                    <strong>{{ movie.rating }}/10</strong>
+                    <span class="rating-label">Movie Rating</span>
+                </div>
+
+                <p class="synopsis">{{ movie.description }}</p>
+
+                <div class="movie-tags">
+                    <span>{{ movie.genre.name }}</span>
+                </div>
+
+                <div class="hero-buttons">
+                    <a href="{% url 'movies' %}" class="primary-btn">
+                        ← Back to Movies
+                    </a>
+
+                    <a href="#movie-info" class="secondary-btn">
+                        More Information
+                    </a>
+
+                    {% if is_saved %}
+                        <form
+                            method="POST"
+                            action="{% url 'remove_from_my_list' movie.id %}"
+                            class="my-list-form"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="my-list-btn saved">
+                                ✓ Remove from My List
+                            </button>
+                        </form>
+                    {% else %}
+                        <form
+                            method="POST"
+                            action="{% url 'add_to_my_list' movie.id %}"
+                            class="my-list-form"
+                        >
+                            {% csrf_token %}
+                            <button type="submit" class="my-list-btn">
+                                + Add to My List
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="details-section" id="movie-info">
+        <div class="section-heading">
+            <span class="eyebrow">MOVIE INFORMATION</span>
+            <h2>Behind the Story</h2>
+        </div>
+
+        <div class="details-grid">
+            <article class="detail-card">
+                <span class="detail-label">DIRECTOR</span>
+                <h3>{{ movie.director.name }}</h3>
+            </article>
+
+            <article class="detail-card">
+                <span class="detail-label">RELEASE YEAR</span>
+                <h3>{{ movie.release_year }}</h3>
+            </article>
+
+            <article class="detail-card">
+                <span class="detail-label">DURATION</span>
+                <h3>{{ movie.duration }} minutes</h3>
+            </article>
+
+            <article class="detail-card">
+                <span class="detail-label">GENRE</span>
+                <h3>{{ movie.genre.name }}</h3>
+            </article>
+        </div>
+
+        <div class="story-section">
+            <h2>About the Movie</h2>
+            <p>{{ movie.description }}</p>
+        </div>
+    </section>
+</main>
+
+<footer class="footer">
+    <a href="{% url 'home' %}" class="logo">FRAME<span>FLIX</span></a>
+    <p>Made for the love of cinema.</p>
+    <p class="copyright">© 2026 FrameFlix Movie Catalog</p>
+</footer>
+
+</body>
+</html>
+```

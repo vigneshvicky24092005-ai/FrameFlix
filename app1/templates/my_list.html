@@ -1,0 +1,127 @@
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My List | FrameFlix</title>
+    <link rel="stylesheet" href="{% static 'css/my_list.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{% url 'home' %}" class="logo">FrameFlix</a>
+
+    <div class="nav-links">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'movies' %}">Movies</a>
+        <a href="{% url 'my_list' %}" class="active">My List</a>
+        <a href="{% url 'logout' %}">Logout</a>
+    </div>
+</nav>
+
+<main class="movies-container">
+
+    <header class="page-heading">
+        <p class="eyebrow">YOUR COLLECTION</p>
+        <h1>My List</h1>
+        <p>Your favourite movies, all in one place.</p>
+    </header>
+
+    {% if messages %}
+        <div class="messages-container">
+            {% for message in messages %}
+                <p class="message">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <div class="movie-grid">
+
+        {% for item in saved_movies %}
+
+            <article class="movie-card">
+
+                <div class="movie-poster">
+                    {% if item.movie.poster %}
+                        <img
+                            src="{{ item.movie.poster }}"
+                            alt="{{ item.movie.title }} poster"
+                            loading="lazy"
+                        >
+                    {% else %}
+                        <div class="poster-placeholder">
+                            <span>🎬</span>
+                            <p>No poster available</p>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <div class="movie-info">
+
+                    <h3>{{ item.movie.title }}</h3>
+
+                    <p class="movie-meta">
+                        {{ item.movie.release_year }}
+                        <span>·</span>
+                        {{ item.movie.genre.name }}
+                    </p>
+
+                    <p class="movie-rating">
+                        <span>★</span> {{ item.movie.rating }}
+                    </p>
+
+                    <a
+                        href="{% url 'movie_detail' item.movie.id %}"
+                        class="details-btn"
+                    >
+                        View Details
+                    </a>
+
+                    <form
+                        method="POST"
+                        action="{% url 'remove_from_my_list' item.movie.id %}"
+                        class="remove-form"
+                    >
+                        {% csrf_token %}
+
+                        <button type="submit" class="remove-btn">
+                            ✕ Remove from My List
+                        </button>
+                    </form>
+
+                </div>
+
+            </article>
+
+        {% empty %}
+
+            <section class="empty-state">
+                <div class="empty-icon">🎬</div>
+
+                <h2>Your list is empty</h2>
+
+                <p>
+                    You haven't saved any movies yet.
+                    Explore the catalog and add your favourites!
+                </p>
+
+                <a href="{% url 'movies' %}" class="details-btn explore-btn">
+                    Explore Movies
+                </a>
+            </section>
+
+        {% endfor %}
+
+    </div>
+
+</main>
+
+<footer class="footer">
+    <p>© 2026 FrameFlix. Your movie collection, your way.</p>
+</footer>
+
+</body>
+</html>

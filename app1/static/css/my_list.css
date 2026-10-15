@@ -1,0 +1,474 @@
+
+/* ===== FrameFlix My List ===== */
+
+:root {
+    --bg: #0b0b0e;
+    --surface: #151519;
+    --red: #ff253a;
+    --text: #f5f5f7;
+    --muted: #96969f;
+    --border: #29292f;
+}
+
+/* ===== Global ===== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: Arial, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a,
+button {
+    -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Navbar ===== */
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 7%;
+    border-bottom: 1px solid var(--border);
+    background: #101014;
+    gap: 20px;
+}
+
+.logo {
+    color: var(--red);
+    font-size: 27px;
+    font-weight: 800;
+    text-decoration: none;
+    letter-spacing: -1px;
+    white-space: nowrap;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+}
+
+.nav-links a {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active,
+.nav-links a[href*="my-list"] {
+    color: var(--red);
+}
+
+/* ===== Main Container ===== */
+
+.movies-container {
+    width: 86%;
+    max-width: 1400px;
+    margin: 55px auto;
+    flex: 1;
+}
+
+/* ===== Page Heading ===== */
+
+.page-heading {
+    margin-bottom: 38px;
+}
+
+.eyebrow {
+    color: var(--red);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    margin-bottom: 12px;
+}
+
+.page-heading h1 {
+    font-size: clamp(32px, 4vw, 46px);
+    margin-bottom: 12px;
+    letter-spacing: -1px;
+}
+
+.page-heading > p:last-child {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* ===== Messages ===== */
+
+.messages-container {
+    margin-bottom: 25px;
+}
+
+.message {
+    padding: 13px 16px;
+    margin-bottom: 10px;
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+/* ===== Movie Grid ===== */
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 26px;
+    align-items: start;
+}
+
+/* ===== Movie Card ===== */
+
+.movie-card {
+    min-width: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    transition:
+        transform 0.3s ease,
+        border-color 0.3s ease,
+        box-shadow 0.3s ease;
+}
+
+.movie-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--red);
+    box-shadow: 0 12px 30px #00000055;
+}
+
+/* ===== Movie Poster ===== */
+
+.movie-poster {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background: #202025;
+    overflow: hidden;
+}
+
+.movie-poster img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+
+.movie-card:hover .movie-poster img {
+    transform: scale(1.04);
+}
+
+.poster-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 180px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--muted);
+    padding: 15px;
+    text-align: center;
+    font-size: 13px;
+}
+
+.poster-placeholder span {
+    font-size: 35px;
+}
+
+/* ===== Movie Information ===== */
+
+.movie-info {
+    padding: 18px;
+}
+
+.movie-info h3 {
+    font-size: 19px;
+    margin-bottom: 10px;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+}
+
+.movie-info p {
+    color: var(--muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+    line-height: 1.6;
+}
+
+.movie-info .movie-meta {
+    color: var(--muted);
+}
+
+.movie-meta span {
+    color: var(--red);
+    padding: 0 3px;
+}
+
+.movie-info .movie-rating {
+    color: #ffc857;
+    font-weight: 700;
+}
+
+.movie-rating span {
+    color: #ffc857;
+    margin-right: 4px;
+}
+
+/* ===== View Details Button ===== */
+
+.details-btn {
+    display: block;
+    width: 100%;
+    padding: 11px 14px;
+    margin-top: 12px;
+    border: 1px solid var(--red);
+    border-radius: 7px;
+    background: var(--red);
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.2s ease,
+        border-color 0.3s ease;
+}
+
+.details-btn:hover {
+    background: transparent;
+    color: var(--red);
+    transform: translateY(-2px);
+}
+
+/* ===== Remove from My List Button ===== */
+
+.remove-form {
+    display: block;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.remove-btn {
+    display: block;
+    width: 100%;
+    min-height: 42px;
+    padding: 11px 12px;
+    border: 1px solid #45454f;
+    border-radius: 7px;
+    background: #202025;
+    color: #d0d0d6;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    cursor: pointer;
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        border-color 0.3s ease,
+        transform 0.2s ease;
+}
+
+.remove-btn:hover {
+    background: rgba(255, 37, 58, 0.12);
+    color: #ff6473;
+    border-color: var(--red);
+    transform: translateY(-2px);
+}
+
+/* ===== Empty State ===== */
+
+.empty-state {
+    grid-column: 1 / -1;
+    padding: 65px 20px;
+    text-align: center;
+    border: 1px dashed #414149;
+    border-radius: 12px;
+    background: var(--surface);
+}
+
+.empty-icon {
+    font-size: 48px;
+    margin-bottom: 18px;
+}
+
+.empty-state h2 {
+    font-size: 25px;
+    margin-bottom: 12px;
+}
+
+.empty-state p {
+    max-width: 480px;
+    margin: 0 auto 22px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.empty-state .details-btn {
+    display: inline-block;
+    width: auto;
+    min-width: 160px;
+}
+
+/* ===== Footer ===== */
+
+.footer {
+    margin-top: auto;
+    padding: 25px 7%;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    background: #101014;
+}
+
+.footer p {
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+/* ===== Responsive: Tablets ===== */
+
+@media (max-width: 1000px) {
+    .movie-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 20px;
+    }
+
+    .movies-container {
+        width: 90%;
+    }
+
+    .movie-info {
+        padding: 15px;
+    }
+}
+
+/* ===== Responsive: Mobile ===== */
+
+@media (max-width: 700px) {
+    .navbar {
+        padding: 18px 5%;
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    .logo {
+        font-size: 24px;
+    }
+
+    .nav-links {
+        gap: 16px;
+        flex-wrap: wrap;
+    }
+
+    .nav-links a {
+        font-size: 13px;
+    }
+
+    .movie-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .movies-container {
+        width: 92%;
+        margin: 35px auto;
+    }
+
+    .page-heading {
+        margin-bottom: 28px;
+    }
+
+    .movie-info {
+        padding: 12px;
+    }
+
+    .movie-info h3 {
+        font-size: 16px;
+    }
+
+    .movie-info p {
+        font-size: 12px;
+    }
+
+    .details-btn {
+        font-size: 12px;
+        padding: 10px 8px;
+    }
+
+    .remove-btn {
+        font-size: 11px;
+        padding: 10px 6px;
+    }
+
+    .empty-state {
+        padding: 45px 16px;
+    }
+
+    .empty-state h2 {
+        font-size: 22px;
+    }
+}
+
+/* ===== Responsive: Small Mobile ===== */
+
+@media (max-width: 380px) {
+    .movie-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .movie-card {
+        max-width: 320px;
+        width: 100%;
+        margin: 0 auto;
+    }
+
+    .nav-links {
+        gap: 12px;
+    }
+
+    .movie-info {
+        padding: 16px;
+    }
+
+    .movie-info h3 {
+        font-size: 18px;
+    }
+}
+
+/* ===== Reduced Motion ===== */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+    }
+}
